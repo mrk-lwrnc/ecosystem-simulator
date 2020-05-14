@@ -1,0 +1,27 @@
+body {
+    background: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    margin-top: 2em;
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    width: 1.5em;
+    height: 1.5em;
+    max-width: 1.5em;
+    max-height: 1.5em;
+    background: #888;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
