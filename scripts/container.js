@@ -1,12 +1,13 @@
-export function buildContainer(container_selector) {
-    const NUMBER_OF_ROWS = 50;
-    const NUMBER_OF_COLUMNS = 50;
+export function buildContainer({ container_selector, environment, biome_display }) {
     let rows = '';
 
-    loopEvery(NUMBER_OF_ROWS, () => {
+    environment.forEach((row, row_index) => {
         let columns = '';
-        loopEvery(NUMBER_OF_COLUMNS, () => {
-            columns += createColumn();
+        row.forEach((animal, column_index) => {
+            columns += createColumn({
+                display: animal,
+                biome: biome_display[row_index][column_index]
+            });
         });
         rows += createRow(columns);
     });
@@ -14,34 +15,44 @@ export function buildContainer(container_selector) {
     container_selector.innerHTML = rows;
 }
 
-export function moveContainer(animal, row, column) {
-    const row_selector = document.querySelectorAll('.row')[row];
-    const column_selector = row_selector.querySelectorAll('.column')[column];
-    column_selector.innerHTML = animal;
-}
+export function buildMinimap(minimap_selector) {
+    const NUM_OF_ROWS = 5;
+    const NUM_OF_COLUMNS = 5;
+    let rows = '';
 
-function loopEvery(num_of_loops, callback) {
-    for (let index = 0; index < num_of_loops; index++) {
-        callback();
+    for(let row = 0; row < NUM_OF_ROWS; row++) {
+        let columns = '';
+        for(let column = 0; column < NUM_OF_COLUMNS; column++) {
+            columns += createDiv({
+                class_name: 'minimap-col',
+                children: ''
+            });
+        }
+        rows += createDiv({
+            class_name: 'minimap-row',
+            children: columns
+        });
     }
+
+    minimap_selector.innerHTML = rows;
 }
 
 function createRow(columns) {
     return createDiv({
-        className: 'row',
+        class_name: 'row',
         children: columns
     });
 }
 
-function createColumn() {
+function createColumn({display, biome}) {
     return createDiv({
-        className: 'column',
-        children: ''
+        class_name: `column${' '.concat(biome)}`,
+        children: display
     });
 }
 
-function createDiv(properties) {
+function createDiv({ class_name, children }) {
     return (
-        `<div class=${properties.className}>${properties.children}</div>`
+        `<div class=\"${class_name}\">${children}</div>`
     );
 }

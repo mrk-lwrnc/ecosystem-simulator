@@ -1,10 +1,10 @@
 export class Animal {
-    constructor({display, initial_row, initial_column}) {
+    constructor({ display, initial_row, initial_column }) {
         this._display = display;
-        this._navigationBehavior = new NavigationBehavior({
+        this._navigation_behavior = new NavigationBehavior({
             current_x: initial_column,
-            current_y: initial_row}
-        );
+            current_y: initial_row
+        });
     }
 
     getDisplay() {
@@ -12,16 +12,16 @@ export class Animal {
     }
 
     getNavigationalBehavior() {
-        return this._navigationBehavior;
+        return this._navigation_behavior;
     }
 
     move(environment) {
-        this._navigationBehavior.navigate(environment);
+        this._navigation_behavior.navigate(environment);
     }
 }
 
 class NavigationBehavior {
-    constructor({current_x, current_y}) {
+    constructor({ current_x, current_y }) {
         this._current_x = current_x;
         this._current_y = current_y;
     }
@@ -41,17 +41,17 @@ class NavigationBehavior {
 
     _generateDirection(environment) {
         const DIRECTIONS = this._getDirections();
-        const GENERATED_INDEX =  Math.floor(Math.random() * DIRECTIONS.length);
+        const GENERATED_INDEX = Math.floor(Math.random() * DIRECTIONS.length);
         const GENERATED_DIRECTION = DIRECTIONS[GENERATED_INDEX];
 
         return this._validateGeneratedDirection(GENERATED_DIRECTION, environment);
     }
 
-    _tryToMove({x, y}, environment) {
-        const IS_SPACE_OCCUPIED = this._isSpaceOccupied({x, y}, environment);
+    _tryToMove({ x, y }, environment) {
+        const IS_SPACE_OCCUPIED = this._isSpaceOccupied({ x, y }, environment);
 
-        if(!IS_SPACE_OCCUPIED) {
-            this._move({x, y}, environment);
+        if (!IS_SPACE_OCCUPIED) {
+            this._move({ x, y }, environment);
             this._current_x = x;
             this._current_y = y;
         }
@@ -63,21 +63,21 @@ class NavigationBehavior {
         const MAX_X = environment[0].length - 1
         let direction = generated_direction;
 
-        if(direction.x < MIN || direction.x > MAX_X){
+        if (direction.x < MIN || direction.x > MAX_X) {
             direction.x = this._current_x;
         }
-        if(direction.y < MIN || direction.y > MAX_Y){
+        if (direction.y < MIN || direction.y > MAX_Y) {
             direction.y = this._current_y;
         }
 
         return direction;
     }
 
-    _isSpaceOccupied({x, y}, environment) {
+    _isSpaceOccupied({ x, y }, environment) {
         return environment[y][x];
     }
 
-    _move({x, y}, environment) {
+    _move({ x, y }, environment) {
         const TRACE = this._getNavigationalTrace(environment);
         const TRACE_COUNT = 1;
         environment[y].splice(x, TRACE_COUNT, TRACE);
@@ -85,7 +85,7 @@ class NavigationBehavior {
 
     _getNavigationalTrace(environment) {
         const TRACE_COUNT = 1;
-        const LEAVING_TRACE = null;
+        const LEAVING_TRACE = '';
 
         return environment[this._current_y].splice(
             this._current_x, TRACE_COUNT, LEAVING_TRACE
